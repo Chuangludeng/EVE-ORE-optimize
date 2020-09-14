@@ -63,7 +63,7 @@ namespace EVE_OREoptimize
                     if (isBuyPrice)
                         kv.Value.price = (int)price.buy.max;
                     else
-                        kv.Value.price = (int)price.sell.max;
+                        kv.Value.price = (int)price.sell.min;
                 }
             }
         }
@@ -119,33 +119,41 @@ namespace EVE_OREoptimize
             {
                 if (useFullORE || kv.Value.isMain)
                 {
-                    int number = (int)Math.Ceiling(solver.GetValue(kv.Value.id).ToDouble());
-
-                    if (number != 0)
-                    {
-                        output.Append($"矿物名称：{kv.Key},购买总量：{AmountFormat(number)},总金额：{MoneyFormat(number * kv.Value.price)}\n");
-                        total_a += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["三钛合金"]) * number;
-                        total_b += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["类晶体胶矿"]) * number;
-                        total_c += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["类银超金属"]) * number;
-                        total_d += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["同位聚合体"]) * number;
-                        total_e += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["超星诺克石"]) * number;
-                        total_f += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["晶状石英岩"]) * number;
-                        total_g += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["超噬矿"]) * number;
-                        total_h += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["莫尔石"]) * number;
-                    }
+                    output.Append($"矿物名称：{kv.Key},矿价：{MoneyFormat(kv.Value.price)}\r\n");
                 }
             }
 
-            output.Append($"三钛合金，需求：{a_need}，化矿：{total_a},结余 ：{total_a - a_need}\n");
-            output.Append($"类晶体胶矿，需求：{b_need}，化矿：{total_b},结余 ：{total_b - b_need}\n");
-            output.Append($"类银超金属，需求：{c_need}，化矿：{total_c},结余 ：{total_c - c_need}\n");
-            output.Append($"同位聚合体，需求：{d_need}，化矿：{total_d},结余 ：{total_d - d_need}\n");
-            output.Append($"超星诺克石，需求：{e_need}，化矿：{total_e},结余 ：{total_e - e_need}\n");
-            output.Append($"晶状石英岩，需求：{f_need}，化矿：{total_f},结余 ：{total_f - f_need}\n");
-            output.Append($"超噬矿，需求：{g_need}，化矿：{total_g},结余 ：{total_g - g_need}\n");
-            output.Append($"莫尔石，需求：{h_need}，化矿：{total_h},结余 ：{total_h - h_need}\n");
+            output.Append("\r\n");
 
-            output.Append($"总金额：{MoneyFormat((int)solver.GetValue(cost).ToDouble())}\n");
+            foreach (var kv in oreDictionary.ORE_Dictionary)
+            {
+                int number = (int)Math.Ceiling(solver.GetValue(kv.Value.id).ToDouble());
+                if (number != 0)
+                {
+                    output.Append($"矿物名称：{kv.Key},购买总量：{MoneyFormat(number)},总金额：{MoneyFormat(number * kv.Value.price)}\r\n");
+                    total_a += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["三钛合金"]) * number;
+                    total_b += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["类晶体胶矿"]) * number;
+                    total_c += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["类银超金属"]) * number;
+                    total_d += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["同位聚合体"]) * number;
+                    total_e += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["超星诺克石"]) * number;
+                    total_f += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["晶状石英岩"]) * number;
+                    total_g += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["超噬矿"]) * number;
+                    total_h += (int)Math.Round(kv.Value.ratio * kv.Value.mineral["莫尔石"]) * number;
+                }
+            }
+
+            output.Append("\r\n");
+
+            output.Append($"三钛合金，需求：{MoneyFormat(a_need)}，化矿：{MoneyFormat(total_a)},结余 ：{MoneyFormat(total_a - a_need)}\r\n");
+            output.Append($"类晶体胶矿，需求：{MoneyFormat(b_need)}，化矿：{MoneyFormat(total_b)},结余 ：{MoneyFormat(total_b - b_need)}\r\n");
+            output.Append($"类银超金属，需求：{MoneyFormat(c_need)}，化矿：{MoneyFormat(total_c)},结余 ：{MoneyFormat(total_c - c_need)}\r\n");
+            output.Append($"同位聚合体，需求：{MoneyFormat(d_need)}，化矿：{MoneyFormat(total_d)},结余 ：{MoneyFormat(total_d - d_need)}\r\n");
+            output.Append($"超星诺克石，需求：{MoneyFormat(e_need)}，化矿：{MoneyFormat(total_e)},结余 ：{MoneyFormat(total_e - e_need)}\r\n");
+            output.Append($"晶状石英岩，需求：{MoneyFormat(f_need)}，化矿：{MoneyFormat(total_f)},结余 ：{MoneyFormat(total_f - f_need)}\r\n");
+            output.Append($"超噬矿，需求：{MoneyFormat(g_need)}，化矿：{MoneyFormat(total_g)},结余 ：{MoneyFormat(total_g - g_need)}\r\n");
+            output.Append($"莫尔石，需求：{MoneyFormat(h_need)}，化矿：{MoneyFormat(total_h)},结余 ：{MoneyFormat(total_h - h_need)}\r\n");
+
+            output.Append($"总金额：{MoneyFormat((int)solver.GetValue(cost).ToDouble())}\r\n");
 
            return output.ToString();
         }
