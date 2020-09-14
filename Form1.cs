@@ -50,5 +50,49 @@ namespace EVE_OREoptimize
             g_input.Text = data[6].Trim().Replace(",", "");
             h_input.Text = data[7].Trim().Replace(",", "");
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var data = Clipboard.GetText().Split("\r\n".ToCharArray());
+            foreach(var item in data)
+            {
+                var nameAndprice = item.Split('\t');
+                if(nameAndprice.Length == 2)
+                {
+                    if (nameAndprice[0] == "三钛合金")
+                    {
+                        a_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "类晶体胶矿")
+                    {
+                        b_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "类银超金属")
+                    {
+                        c_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "同位聚合体")
+                    {
+                        d_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "超新星诺克石")
+                    {
+                        e_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "晶状石英核岩")
+                    {
+                        f_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "超噬矿")
+                    {
+                        g_input.Text = nameAndprice[1];
+                    }
+                    if (nameAndprice[0] == "莫尔石")
+                    {
+                        h_input.Text = nameAndprice[1];
+                    }
+                } 
+            }
+        }
     }
 }
